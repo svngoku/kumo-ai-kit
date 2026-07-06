@@ -91,7 +91,7 @@ export function PromptComposer({
   return (
     <div
       className={cn(
-        "flex flex-col gap-1.5 rounded-3xl bg-kumo-base p-3 shadow-xs ring-1 ring-kumo-hairline transition-shadow duration-200 focus-within:ring-2 focus-within:ring-kumo-brand/50",
+        "flex flex-col gap-1.5 rounded-3xl bg-kumo-base p-3 shadow-xs ring-1 ring-kumo-hairline transition-shadow duration-200 focus-within:shadow-md focus-within:ring-2 focus-within:ring-kumo-brand/50",
         disabled && "opacity-60",
         className,
       )}
@@ -131,7 +131,7 @@ export function PromptComposer({
                   shape="circle"
                   icon={StopIcon}
                   aria-label="Stop generating"
-                  className="aikit-pulse text-kumo-danger"
+                  className="aikit-pulse aikit-press text-kumo-danger"
                   onClick={onStop}
                 />
               }
@@ -143,6 +143,7 @@ export function PromptComposer({
               icon={ArrowUpIcon}
               aria-label="Send prompt"
               disabled={!canSend}
+              className="aikit-press"
               onClick={submit}
             />
           )}

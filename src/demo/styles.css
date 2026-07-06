@@ -27,6 +27,12 @@ samp,
   font-family: "JetBrains Mono", ui-monospace, "SF Mono", Menlo, monospace;
 }
 
+/* Editorial accent — one distinctive move, used once in the hero */
+.font-serif-accent {
+  font-family: "Instrument Serif", Georgia, "Times New Roman", serif;
+  font-weight: 400;
+}
+
 html {
   scroll-behavior: smooth;
 }

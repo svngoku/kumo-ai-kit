@@ -26,6 +26,11 @@ export interface ChatMessageProps {
   footer?: ReactNode;
   /** Soft entrance animation. @default true */
   animateIn?: boolean;
+  /**
+   * Visual tone of the user bubble: a soft brand tint or a neutral fill.
+   * @default "brand"
+   */
+  tone?: "brand" | "neutral";
   className?: string;
 }
 
@@ -69,6 +74,7 @@ export function ChatMessage({
   actions,
   footer,
   animateIn = true,
+  tone = "brand",
   className,
 }: ChatMessageProps) {
   if (role === "system") {
@@ -94,9 +100,11 @@ export function ChatMessage({
     <div
       className={cn(
         "max-w-full rounded-3xl px-4 py-3 text-[15px] leading-relaxed text-kumo-default",
-        isUser
-          ? "rounded-br-lg bg-kumo-recessed"
-          : "rounded-bl-lg bg-kumo-base shadow-xs ring-1 ring-kumo-hairline",
+        isUser &&
+          (tone === "brand"
+            ? "rounded-br-lg bg-kumo-brand/10"
+            : "rounded-br-lg bg-kumo-recessed"),
+        !isUser && "rounded-bl-lg bg-kumo-base shadow-xs ring-1 ring-kumo-hairline",
         role === "tool" && "font-mono text-[13px]",
         isError && "bg-kumo-danger/5 ring-1 ring-kumo-danger/30",
       )}

@@ -60,19 +60,22 @@ function useThemeMode() {
 
 function SectionHeading({
   id,
+  num,
   eyebrow,
   title,
   description,
 }: {
   id: string;
+  num: string;
   eyebrow: string;
   title: string;
   description: string;
 }) {
   return (
     <div id={id} className="flex scroll-mt-24 flex-col gap-2">
-      <span className="flex items-center gap-2 font-mono text-xs tracking-widest text-kumo-subtle uppercase">
+      <span className="flex items-center gap-2 font-mono text-[11px] font-medium tracking-[0.12em] text-kumo-subtle uppercase">
         <span className="size-1.5 rounded-full bg-kumo-brand" aria-hidden />
+        <span className="text-kumo-inactive tabular-nums">{num}</span>
         {eyebrow}
       </span>
       <Text variant="heading2" as="h2">
@@ -123,7 +126,7 @@ export function App() {
               <a
                 key={href}
                 href={href}
-                className="rounded-full px-3 py-1.5 text-sm text-kumo-subtle transition-colors hover:bg-kumo-tint hover:text-kumo-default"
+                className="rounded-full px-3 py-1.5 text-sm text-kumo-subtle transition-colors hover:bg-kumo-tint hover:text-kumo-default focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-kumo-focus"
               >
                 {label}
               </a>
@@ -145,7 +148,7 @@ export function App() {
               target="_blank"
               rel="noopener noreferrer"
               aria-label="View source on GitHub"
-              className="flex size-8 items-center justify-center rounded-lg text-kumo-subtle transition-colors hover:bg-kumo-tint hover:text-kumo-default"
+              className="flex size-8 items-center justify-center rounded-lg text-kumo-subtle transition-colors hover:bg-kumo-tint hover:text-kumo-default focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-kumo-focus"
             >
               <GithubLogoIcon size={17} />
             </a>
@@ -158,11 +161,10 @@ export function App() {
         <div className="aikit-halo pointer-events-none absolute inset-x-0 top-0 h-80" aria-hidden />
         <div className="relative mx-auto flex max-w-6xl flex-col items-center gap-6 px-4 pt-20 pb-16 text-center sm:px-6">
           <Badge variant="outline">Built on Cloudflare's Kumo design system</Badge>
-          <div className="max-w-3xl text-balance">
-            <Text variant="heading1" as="h1">
-              Soft components for building AI platforms
-            </Text>
-          </div>
+          <h1 className="max-w-3xl text-balance text-[clamp(2.5rem,4.5vw+1rem,4rem)] leading-[1.08] font-semibold tracking-tight text-kumo-default">
+            <span className="font-serif-accent font-normal italic">Soft</span>{" "}
+            components for building AI platforms
+          </h1>
           <p className="max-w-xl text-balance text-[17px] leading-relaxed text-kumo-subtle">
             Sixteen gentle, high-level React components — chat, streaming, agents,
             tool calls, usage and credentials — styled entirely with Kumo semantic
@@ -188,6 +190,7 @@ export function App() {
         <Section>
           <SectionHeading
             id="playground"
+            num="01"
             eyebrow="Conversation"
             title="A living playground"
             description="ChatThread, ChatMessage, StreamingText, ThinkingIndicator, SourceChip, FeedbackBar, PromptComposer, ModelSelect, ParameterSlider, SystemPromptEditor and TokenUsageMeter — one working loop. Send something."
@@ -198,12 +201,13 @@ export function App() {
         <Section>
           <SectionHeading
             id="agents"
+            num="02"
             eyebrow="Agents & tools"
             title="Fleet at a glance"
             description="AgentCard tiles with soft auras and live status, ToolCallCard inspectors for every invocation, and one RunStatusBadge vocabulary across the whole platform."
           />
 
-          <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
+          <div className="aikit-stagger grid gap-4 md:grid-cols-2 lg:grid-cols-3">
             {AGENTS.map((agent) => (
               <AgentCard key={agent.id} agent={agent} onRun={handleRun} />
             ))}
@@ -244,12 +248,13 @@ export function App() {
         <Section>
           <SectionHeading
             id="usage"
+            num="03"
             eyebrow="Usage & billing"
             title="Numbers that stay calm"
             description="UsageStat cards with deltas and dependency-free sparklines. Latency and spend flip their colors — because down is good there."
           />
 
-          <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
+          <div className="aikit-stagger grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
             <UsageStat
               label="Requests"
               value="48.2K"
@@ -297,6 +302,7 @@ export function App() {
         <Section>
           <SectionHeading
             id="credentials"
+            num="04"
             eyebrow="Trust"
             title="Credentials, handled gently"
             description="ApiKeyField wraps Kumo's SensitiveInput — masked by default, reveal on click, copy on hover — with a live configured badge."

@@ -1,6 +1,6 @@
 import { cn } from "@cloudflare/kumo";
 import { TrendDownIcon, TrendUpIcon, type Icon } from "@phosphor-icons/react";
-import type { ReactNode } from "react";
+import { useId, type ReactNode } from "react";
 
 export interface UsageStatProps {
   /** e.g. "Requests", "Tokens burned", "Avg latency", "Spend". */
@@ -20,6 +20,9 @@ export interface UsageStatProps {
 }
 
 function Sparkline({ values }: { values: number[] }) {
+  // SVG-safe unique id (React 19 useId may contain non-alphanumeric chars)
+  const gradientId = `aikit-spark-${useId().replace(/[^a-zA-Z0-9_-]/g, "")}`;
+
   if (values.length < 2) return null;
 
   const min = Math.min(...values);
@@ -38,7 +41,13 @@ function Sparkline({ values }: { values: number[] }) {
       aria-hidden="true"
       className="h-8 w-full text-kumo-brand"
     >
-      <polygon points={`0,32 ${points} 100,32`} fill="currentColor" opacity={0.08} />
+      <defs>
+        <linearGradient id={gradientId} x1="0" y1="0" x2="0" y2="1">
+          <stop offset="0%" stopColor="currentColor" stopOpacity={0.22} />
+          <stop offset="100%" stopColor="currentColor" stopOpacity={0} />
+        </linearGradient>
+      </defs>
+      <polygon points={`0,32 ${points} 100,32`} fill={`url(#${gradientId})`} />
       <polyline
         points={points}
         fill="none"

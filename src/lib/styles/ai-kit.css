@@ -77,6 +77,40 @@
   animation-delay: 0.32s;
 }
 
+/* ---- Staggered entrance for grids of cards ------------------ */
+.aikit-stagger > * {
+  animation: aikit-rise 0.55s var(--aikit-ease) both;
+}
+
+.aikit-stagger > *:nth-child(2) {
+  animation-delay: 90ms;
+}
+
+.aikit-stagger > *:nth-child(3) {
+  animation-delay: 180ms;
+}
+
+.aikit-stagger > *:nth-child(4) {
+  animation-delay: 270ms;
+}
+
+.aikit-stagger > *:nth-child(5) {
+  animation-delay: 360ms;
+}
+
+.aikit-stagger > *:nth-child(6) {
+  animation-delay: 450ms;
+}
+
+/* ---- Pressable micro-interaction ----------------------------- */
+.aikit-press {
+  transition: transform 130ms var(--aikit-ease);
+}
+
+.aikit-press:active {
+  transform: scale(0.96);
+}
+
 /* ---- Soft pulse for "running" status dots ------------------- */
 @keyframes aikit-pulse-ring {
   0% {
@@ -119,7 +153,8 @@
 @media (prefers-reduced-motion: reduce) {
   .aikit-rise,
   .aikit-dot,
-  .aikit-pulse {
+  .aikit-pulse,
+  .aikit-stagger > * {
     animation: none;
   }
 
