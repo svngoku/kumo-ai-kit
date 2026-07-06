@@ -1,45 +1,17 @@
-import {
-  Badge,
-  Banner,
-  Button,
-  ClipboardText,
-  useKumoToastManager,
-} from "@cloudflare/kumo";
+import { Badge, Button, ClipboardText } from "@cloudflare/kumo";
 import {
   CloudIcon,
-  CoinsIcon,
-  GaugeIcon,
   GithubLogoIcon,
-  InfoIcon,
-  LightningIcon,
   MoonIcon,
-  StackIcon,
+  SquaresFourIcon,
   SunIcon,
 } from "@phosphor-icons/react";
 import { useEffect, useState, type ReactNode } from "react";
-import {
-  AgentCard,
-  ApiKeyField,
-  RunStatusBadge,
-  ToolCallCard,
-  UsageStat,
-  type AgentSummary,
-  type RunStatus,
-} from "../lib";
-import { AGENTS, TOOL_CALLS } from "./data";
+import { Console } from "./Console";
 import { Playground } from "./Playground";
+import { AgentsContent, CredentialsContent, UsageContent } from "./sections";
 
 export const REPO_URL = "https://github.com/svngoku/kumo-ai-kit";
-
-const RUN_STATUSES: RunStatus[] = [
-  "idle",
-  "queued",
-  "running",
-  "succeeded",
-  "failed",
-  "canceled",
-  "paused",
-];
 
 function useThemeMode() {
   const [mode, setMode] = useState<"light" | "dark">(() =>
@@ -55,6 +27,23 @@ function useThemeMode() {
   }, [mode]);
 
   return { mode, toggle: () => setMode((m) => (m === "dark" ? "light" : "dark")) };
+}
+
+function useHashRoute() {
+  const read = () =>
+    typeof window !== "undefined" && window.location.hash === "#console"
+      ? ("console" as const)
+      : ("home" as const);
+
+  const [route, setRoute] = useState<"home" | "console">(read);
+
+  useEffect(() => {
+    const onHashChange = () => setRoute(read());
+    window.addEventListener("hashchange", onHashChange);
+    return () => window.removeEventListener("hashchange", onHashChange);
+  }, []);
+
+  return route;
 }
 
 function SectionHeading({
@@ -100,14 +89,19 @@ function Section({ children }: { children: ReactNode }) {
 
 export function App() {
   const { mode, toggle } = useThemeMode();
-  const toasts = useKumoToastManager();
+  const route = useHashRoute();
 
-  const handleRun = (agent: AgentSummary) => {
-    toasts.add({
-      title: `${agent.name} started`,
-      description: `Running on ${agent.model} — watch the status badge flip.`,
-    });
-  };
+  if (route === "console") {
+    return (
+      <Console
+        mode={mode}
+        onToggleTheme={toggle}
+        onExit={() => {
+          window.location.hash = "";
+        }}
+      />
+    );
+  }
 
   return (
     <div className="min-h-screen bg-kumo-canvas text-kumo-default">
@@ -158,6 +152,17 @@ export function App() {
             >
               <GithubLogoIcon size={17} />
             </a>
+            <Button
+              variant="primary"
+              size="sm"
+              icon={SquaresFourIcon}
+              className="aikit-press ml-1"
+              onClick={() => {
+                window.location.hash = "console";
+              }}
+            >
+              Console
+            </Button>
           </div>
         </div>
       </header>
@@ -194,6 +199,16 @@ export function App() {
           </p>
           <div className="flex flex-wrap items-center justify-center gap-3">
             <ClipboardText text="npm install kumo-ai-kit @cloudflare/kumo" />
+            <Button
+              variant="primary"
+              icon={SquaresFourIcon}
+              className="aikit-press"
+              onClick={() => {
+                window.location.hash = "console";
+              }}
+            >
+              Open the console
+            </Button>
           </div>
           <div className="flex flex-wrap items-center justify-center gap-1.5 text-xs text-kumo-inactive">
             <span>React 19</span>
@@ -238,43 +253,7 @@ export function App() {
             }
             description="AgentCard tiles with soft auras and live status, ToolCallCard inspectors for every invocation, and one RunStatusBadge vocabulary across the whole platform."
           />
-
-          <div className="aikit-stagger grid gap-4 md:grid-cols-2 lg:grid-cols-3">
-            {AGENTS.map((agent) => (
-              <AgentCard key={agent.id} agent={agent} onRun={handleRun} />
-            ))}
-          </div>
-
-          <div className="grid gap-6 lg:grid-cols-2">
-            <div className="flex flex-col gap-3">
-              <h3 className="font-display text-xl font-bold tracking-tight text-kumo-default">
-                Tool calls
-              </h3>
-              {TOOL_CALLS.map((call, index) => (
-                <ToolCallCard key={call.id} toolCall={call} defaultOpen={index === 0} />
-              ))}
-            </div>
-
-            <div className="flex flex-col gap-3">
-              <h3 className="font-display text-xl font-bold tracking-tight text-kumo-default">
-                Run states
-              </h3>
-              <div className="flex flex-col gap-4 rounded-3xl bg-kumo-base p-5 ring-1 ring-kumo-hairline">
-                <p className="text-sm text-kumo-subtle">
-                  Every run, agent and workflow speaks the same status language:
-                </p>
-                <div className="flex flex-wrap items-center gap-2">
-                  {RUN_STATUSES.map((status) => (
-                    <RunStatusBadge key={status} status={status} />
-                  ))}
-                </div>
-                <p className="text-sm text-kumo-subtle">
-                  The running state pulses softly — enough to notice, never enough
-                  to distract.
-                </p>
-              </div>
-            </div>
-          </div>
+          <AgentsContent />
         </Section>
 
         <Section>
@@ -290,50 +269,7 @@ export function App() {
             }
             description="UsageStat cards with deltas and dependency-free sparklines. Latency and spend flip their colors — because down is good there."
           />
-
-          <div className="aikit-stagger grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
-            <UsageStat
-              label="Requests"
-              value="48.2K"
-              delta={12.4}
-              deltaLabel="vs last week"
-              icon={LightningIcon}
-              trend={[18, 22, 21, 26, 24, 30, 33, 31, 38, 42]}
-            />
-            <UsageStat
-              label="Tokens"
-              value="9.6M"
-              delta={8.1}
-              deltaLabel="vs last week"
-              icon={StackIcon}
-              trend={[40, 42, 45, 43, 48, 47, 52, 55, 54, 60]}
-            />
-            <UsageStat
-              label="Avg latency"
-              value="842ms"
-              delta={-6.3}
-              deltaLabel="vs last week"
-              positiveIsGood={false}
-              icon={GaugeIcon}
-              trend={[62, 60, 64, 58, 55, 57, 52, 50, 51, 48]}
-            />
-            <UsageStat
-              label="Spend"
-              value="$412.08"
-              delta={4.9}
-              deltaLabel="vs last week"
-              positiveIsGood={false}
-              icon={CoinsIcon}
-              trend={[20, 22, 21, 24, 25, 24, 27, 28, 27, 30]}
-            />
-          </div>
-
-          <Banner
-            icon={<InfoIcon weight="fill" />}
-            variant="secondary"
-            title="Budget alerts"
-            description="Soft alerts fire at 80% of budget; hard limits pause agents gracefully mid-conversation, never mid-sentence."
-          />
+          <UsageContent />
         </Section>
 
         <Section>
@@ -349,19 +285,7 @@ export function App() {
             }
             description="ApiKeyField wraps Kumo's SensitiveInput — masked by default, reveal on click, copy on hover — with a live configured badge."
           />
-
-          <div className="grid max-w-3xl gap-6 sm:grid-cols-2">
-            <ApiKeyField
-              provider="OpenAI"
-              defaultValue="sk-demo-1234567890abcdef"
-              description="Used by Stratus models."
-            />
-            <ApiKeyField
-              provider="Anthropic"
-              placeholder="sk-ant-…"
-              description="Required for Cirrus models."
-            />
-          </div>
+          <CredentialsContent />
         </Section>
       </main>
 
