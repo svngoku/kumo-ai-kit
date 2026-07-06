@@ -17,6 +17,15 @@
     "Segoe UI",
     sans-serif;
   font-optical-sizing: auto;
+
+  /* Soft radius scale — lifts every Kumo control (selects, inputs,
+     clipboard fields, code blocks, popups) to match the kit's
+     rounded identity. Tailwind v4 utilities resolve var(--radius-*). */
+  --radius-sm: 0.625rem;
+  --radius-md: 0.875rem;
+  --radius-lg: 1rem;
+  --radius-xl: 1.125rem;
+  --radius-2xl: 1.25rem;
 }
 
 /* Display voice — headlines, wordmark, ghost numerals.

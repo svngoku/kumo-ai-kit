@@ -79,18 +79,27 @@ export function ModelSelect({
   };
 
   return (
-    <Select
-      label={label}
-      hideLabel={hideLabel}
-      size={size}
-      disabled={disabled}
-      items={items}
-      value={value}
-      renderValue={renderValue}
-      onValueChange={(next) => {
-        if (typeof next === "string") onValueChange?.(next);
-      }}
-      className={className}
-    />
+    <span
+      className={cn(
+        "inline-flex",
+        // Kumo's Select renders a visible label element even when
+        // hideLabel is set (an sr-only copy exists for a11y) — hide it.
+        hideLabel && "[&_[id$=-label]]:hidden",
+      )}
+    >
+      <Select
+        label={label}
+        hideLabel={hideLabel}
+        size={size}
+        disabled={disabled}
+        items={items}
+        value={value}
+        renderValue={renderValue}
+        onValueChange={(next) => {
+          if (typeof next === "string") onValueChange?.(next);
+        }}
+        className={cn("rounded-full", className)}
+      />
+    </span>
   );
 }
