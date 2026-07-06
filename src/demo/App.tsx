@@ -3,7 +3,6 @@ import {
   Banner,
   Button,
   ClipboardText,
-  Text,
   useKumoToastManager,
 } from "@cloudflare/kumo";
 import {
@@ -68,20 +67,27 @@ function SectionHeading({
   id: string;
   num: string;
   eyebrow: string;
-  title: string;
+  title: ReactNode;
   description: string;
 }) {
   return (
-    <div id={id} className="flex scroll-mt-24 flex-col gap-2">
-      <span className="flex items-center gap-2 font-mono text-[11px] font-medium tracking-[0.12em] text-kumo-subtle uppercase">
+    <div id={id} className="relative flex scroll-mt-24 flex-col gap-2">
+      {/* Grid-breaking ghost numeral */}
+      <span
+        aria-hidden
+        className="font-display pointer-events-none absolute -top-12 -left-3 text-[6rem] leading-none font-extrabold tracking-tighter text-kumo-default opacity-5 select-none sm:-top-16 sm:text-[8rem]"
+      >
+        {num}
+      </span>
+      <span className="relative flex items-center gap-2 font-mono text-[11px] font-medium tracking-[0.12em] text-kumo-subtle uppercase">
         <span className="size-1.5 rounded-full bg-kumo-brand" aria-hidden />
         <span className="text-kumo-inactive tabular-nums">{num}</span>
         {eyebrow}
       </span>
-      <Text variant="heading2" as="h2">
+      <h2 className="font-display relative text-3xl font-bold tracking-tight text-kumo-default">
         {title}
-      </Text>
-      <p className="max-w-2xl text-[15px] leading-relaxed text-kumo-subtle">
+      </h2>
+      <p className="relative max-w-2xl text-[15px] leading-relaxed text-kumo-subtle">
         {description}
       </p>
     </div>
@@ -112,7 +118,7 @@ export function App() {
             <span className="aikit-ai-avatar flex size-8 items-center justify-center rounded-xl ring-1 ring-kumo-hairline">
               <CloudIcon size={17} weight="fill" className="text-kumo-strong" />
             </span>
-            <span className="font-semibold tracking-tight">Kumo AI Kit</span>
+            <span className="font-display font-bold tracking-tight">Kumo AI Kit</span>
             <Badge variant="beta">v0.1</Badge>
           </a>
 
@@ -159,9 +165,25 @@ export function App() {
       {/* ---------- Hero ---------- */}
       <div id="top" className="relative overflow-hidden">
         <div className="aikit-halo pointer-events-none absolute inset-x-0 top-0 h-80" aria-hidden />
-        <div className="relative mx-auto flex max-w-6xl flex-col items-center gap-6 px-4 pt-20 pb-16 text-center sm:px-6">
+        {/* Atmosphere: soft dot field fading from the top */}
+        <div
+          aria-hidden
+          className="pointer-events-none absolute inset-0"
+          style={{
+            backgroundImage:
+              "radial-gradient(var(--color-kumo-hairline) 1px, transparent 1px)",
+            backgroundSize: "22px 22px",
+            maskImage: "radial-gradient(55% 60% at 50% 8%, black, transparent 78%)",
+          }}
+        />
+        {/* Second aura, tilted off-axis for depth */}
+        <div
+          aria-hidden
+          className="aikit-halo pointer-events-none absolute top-24 -right-64 h-96 w-2xl rotate-12 opacity-70"
+        />
+        <div className="aikit-stagger relative mx-auto flex max-w-6xl flex-col items-center gap-6 px-4 pt-20 pb-16 text-center sm:px-6">
           <Badge variant="outline">Built on Cloudflare's Kumo design system</Badge>
-          <h1 className="max-w-3xl text-balance text-[clamp(2.5rem,4.5vw+1rem,4rem)] leading-[1.08] font-semibold tracking-tight text-kumo-default">
+          <h1 className="font-display max-w-3xl text-balance text-[clamp(2.5rem,4.5vw+1rem,4rem)] leading-[1.08] font-bold tracking-tight text-kumo-default">
             <span className="font-serif-accent font-normal italic">Soft</span>{" "}
             components for building AI platforms
           </h1>
@@ -192,7 +214,12 @@ export function App() {
             id="playground"
             num="01"
             eyebrow="Conversation"
-            title="A living playground"
+            title={
+              <>
+                A living{" "}
+                <em className="font-serif-accent font-normal italic">playground</em>
+              </>
+            }
             description="ChatThread, ChatMessage, StreamingText, ThinkingIndicator, SourceChip, FeedbackBar, PromptComposer, ModelSelect, ParameterSlider, SystemPromptEditor and TokenUsageMeter — one working loop. Send something."
           />
           <Playground />
@@ -203,7 +230,12 @@ export function App() {
             id="agents"
             num="02"
             eyebrow="Agents & tools"
-            title="Fleet at a glance"
+            title={
+              <>
+                Fleet at a{" "}
+                <em className="font-serif-accent font-normal italic">glance</em>
+              </>
+            }
             description="AgentCard tiles with soft auras and live status, ToolCallCard inspectors for every invocation, and one RunStatusBadge vocabulary across the whole platform."
           />
 
@@ -215,18 +247,18 @@ export function App() {
 
           <div className="grid gap-6 lg:grid-cols-2">
             <div className="flex flex-col gap-3">
-              <Text variant="heading3" as="h3">
+              <h3 className="font-display text-xl font-bold tracking-tight text-kumo-default">
                 Tool calls
-              </Text>
+              </h3>
               {TOOL_CALLS.map((call, index) => (
                 <ToolCallCard key={call.id} toolCall={call} defaultOpen={index === 0} />
               ))}
             </div>
 
             <div className="flex flex-col gap-3">
-              <Text variant="heading3" as="h3">
+              <h3 className="font-display text-xl font-bold tracking-tight text-kumo-default">
                 Run states
-              </Text>
+              </h3>
               <div className="flex flex-col gap-4 rounded-3xl bg-kumo-base p-5 ring-1 ring-kumo-hairline">
                 <p className="text-sm text-kumo-subtle">
                   Every run, agent and workflow speaks the same status language:
@@ -250,7 +282,12 @@ export function App() {
             id="usage"
             num="03"
             eyebrow="Usage & billing"
-            title="Numbers that stay calm"
+            title={
+              <>
+                Numbers that stay{" "}
+                <em className="font-serif-accent font-normal italic">calm</em>
+              </>
+            }
             description="UsageStat cards with deltas and dependency-free sparklines. Latency and spend flip their colors — because down is good there."
           />
 
@@ -304,7 +341,12 @@ export function App() {
             id="credentials"
             num="04"
             eyebrow="Trust"
-            title="Credentials, handled gently"
+            title={
+              <>
+                Credentials, handled{" "}
+                <em className="font-serif-accent font-normal italic">gently</em>
+              </>
+            }
             description="ApiKeyField wraps Kumo's SensitiveInput — masked by default, reveal on click, copy on hover — with a live configured badge."
           />
 

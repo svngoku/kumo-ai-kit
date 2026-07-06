@@ -11,11 +11,17 @@
 
 :root {
   font-family:
-    "Inter",
+    "Instrument Sans",
     system-ui,
     -apple-system,
     "Segoe UI",
     sans-serif;
+  font-optical-sizing: auto;
+}
+
+/* Display voice — headlines, wordmark, ghost numerals */
+.font-display {
+  font-family: "Bricolage Grotesque", "Instrument Sans", system-ui, sans-serif;
   font-optical-sizing: auto;
 }
 
