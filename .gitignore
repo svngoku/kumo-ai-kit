@@ -1,0 +1,12 @@
+# Dependencies
+node_modules/
+
+# Build output
+dist/
+dist-demo/
+demo-standalone.html
+
+# Logs & local files
+npm-debug.log*
+*.local
+.DS_Store

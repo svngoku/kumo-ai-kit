@@ -1,0 +1,36 @@
+/* Kumo requires this exact order:
+   1. @source so Tailwind scans Kumo's compiled components
+   2. Kumo theme tokens registered before Tailwind
+   3. Tailwind itself */
+@source "../../node_modules/@cloudflare/kumo/dist/**/*.{js,jsx,ts,tsx}";
+@import "@cloudflare/kumo/styles";
+@import "tailwindcss";
+
+/* The kit's soft layer (motion, carets, auras) */
+@import "../lib/styles/ai-kit.css";
+
+:root {
+  font-family:
+    "Inter",
+    system-ui,
+    -apple-system,
+    "Segoe UI",
+    sans-serif;
+  font-optical-sizing: auto;
+}
+
+code,
+pre,
+kbd,
+samp,
+.font-mono {
+  font-family: "JetBrains Mono", ui-monospace, "SF Mono", Menlo, monospace;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  margin: 0;
+}
