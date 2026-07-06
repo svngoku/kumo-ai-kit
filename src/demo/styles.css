@@ -19,10 +19,12 @@
   font-optical-sizing: auto;
 }
 
-/* Display voice — headlines, wordmark, ghost numerals */
+/* Display voice — headlines, wordmark, ghost numerals.
+   Unified on Instrument Sans (tight tracking + weight do the display work). */
 .font-display {
-  font-family: "Bricolage Grotesque", "Instrument Sans", system-ui, sans-serif;
+  font-family: "Instrument Sans", system-ui, sans-serif;
   font-optical-sizing: auto;
+  letter-spacing: -0.02em;
 }
 
 code,
