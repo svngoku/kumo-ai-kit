@@ -11,7 +11,7 @@
 
 :root {
   font-family:
-    "Instrument Sans",
+    "Host Grotesk",
     system-ui,
     -apple-system,
     "Segoe UI",
@@ -29,9 +29,9 @@
 }
 
 /* Display voice — headlines, wordmark, ghost numerals.
-   Unified on Instrument Sans (tight tracking + weight do the display work). */
+   Host Grotesk with tight tracking; weights up to 800 available. */
 .font-display {
-  font-family: "Instrument Sans", system-ui, sans-serif;
+  font-family: "Host Grotesk", system-ui, sans-serif;
   font-optical-sizing: auto;
   letter-spacing: -0.02em;
 }

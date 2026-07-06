@@ -64,7 +64,7 @@ function SectionHeading({
       {/* Grid-breaking ghost numeral */}
       <span
         aria-hidden
-        className="font-display pointer-events-none absolute -top-12 -left-3 text-[6rem] leading-none font-bold tracking-tighter text-kumo-default opacity-5 select-none sm:-top-16 sm:text-[8rem]"
+        className="font-display pointer-events-none absolute -top-12 -left-3 text-[6rem] leading-none font-extrabold tracking-tighter text-kumo-default opacity-5 select-none sm:-top-16 sm:text-[8rem]"
       >
         {num}
       </span>
